@@ -154,5 +154,89 @@ The historical split between **"essential"** (in /bin, /sbin) and **"non-essenti
     * `/usr/local/lib`
   
   Useful for custom apps or source-compiled tools.
-  
+
+#
+
+### `/boot` – Bootloader files
+
+Contains **static files required to boot the system**, including the Linux kernel, initial RAM filesystem, and bootloader configuration.
+- Files here are **static** – they don't change during normal operation.
+- **Multiple kernel** versions are kept here for **fallback booting**.
+
+**Key Contents:**
+- **Kernel images:** `vmlinuz-*` (compressed kernel executable)
+- **Initial RAM filesystem:** `initramfs-*.img` or `initrd-*.img` (temporary root filesystem loaded into memory)
+- **Bootloader files:** GRUB configuration (`grub.cfg`), modules, and themes
+- **EFI system partition mount point:** `/boot/efi/` (on UEFI systems)
+
+**Directory Structure:**
+```
+/boot/
+├── vmlinuz-6.1.0-amd64          # Linux kernel
+├── initramfs-6.1.0-amd64.img    # Initial RAM filesystem
+├── grub/                        # GRUB bootloader
+│   ├── grub.cfg                 # Boot menu configuration
+│   └── fonts/                   # Boot menu fonts
+└── efi/                         # EFI partition (UEFI systems)
+    └── EFI/ubuntu/grubx64.efi   # UEFI bootloader
+```
+
+#
+
+### `/etc` – Configuration files
+
+**The central repository for system-wide configuration files** and scripts. The name originates from early Unix systems where "etc" stood for "etcetera" (miscellaneous files).
+
+**Core Principles:**
+1. **Host-specific:** Configurations are specific to *this* machine (not shared across networks)
+2. **Text-based:** Primarily editable text files (no binaries)
+3. **System-wide:** Affects all users (user-specific configs go in home directories)
+
+#### **Key Categories & Examples:**
+
+- **System Configuration:**
+  - `/etc/fstab` – Filesystem mount table
+  - `/etc/hostname`, `/etc/hosts` – Network naming
+  - `/etc/resolv.conf` – DNS configuration
+  - `/etc/localtime` – Timezone setting
+
+- **Service Configuration:**
+  - `/etc/ssh/sshd_config` – SSH server settings
+  - `/etc/nginx/nginx.conf` – Web server configuration
+  - `/etc/systemd/system/` – Systemd service units
+  - `/etc/crontab`, `/etc/cron.d/` – Scheduled tasks
+
+- **User & Security:**
+  - `/etc/passwd`, `/etc/group` – User and group databases
+  - `/etc/shadow` – Encrypted passwords (root only)
+  - `/etc/sudoers` – Sudo permissions
+  - `/etc/selinux/config` – SELinux policy (RHEL/Fedora)
+
+- **Package Management:**
+  - `/etc/apt/sources.list` – APT repositories (Debian/Ubuntu)
+  - `/etc/yum.repos.d/` – YUM/DNF repositories (RHEL/Fedora)
+  - `/etc/pacman.conf` – Pacman configuration (Arch)
+
+#### **FHS rule:**
+- No **binary** files allowed in `/etc`
+- Only **text** configurations.
+
+#### **Common Exceptions:**
+- **Some binaries *are* allowed:**
+  - `/etc/alternatives/` – Symbolic links managed by `update-alternatives`
+  - `/etc/skel/` – Template files for new user home directories
+  - `/etc/cron.hourly/`, `/etc/cron.daily/` – Script directories (though these are typically symlinks to `/etc/cron.d/`)
+    
+- **Some configuration isn't here:**
+  - User-specific configs → `~/.config/`
+  - Application data → `~/.local/share/`
+  - System-wide variable data → `/var/`
+
+### **Modern Developments:**
+- **Configuration directories:** Many services use `/etc/[service]/conf.d/` for modular configs
+- **Dot-directories:** Some apps use `/etc/.config/` pattern (following XDG standards)
+- **Automatic config generators:** Tools like `netplan` (Ubuntu) generate configs in `/etc` from YAML files
+
+#
+
 

@@ -79,6 +79,18 @@ This directory contains **binaries** essential for **system administration**, **
 
 #
 
+### `/lib`	- Core libraries
+Contains **shared library files** (.so files) needed by programs in `/usr/bin` and `/usr/sbin`. Which is now **Symbolic** link to `/usr/lib` directory. 
+- Its actually contains architecture dependent **32-bit** specific **library** files.
+
+#
+
+### `/lib64`	- Core libraries
+Contains **shared library files** (.so files) needed by programs in `/usr/bin` and `/usr/sbin`. Which is now **Symbolic** link to `/usr/lib64` directory. 
+- Its actually contains architecture dependent **64-bit** specific **library** files.
+
+#
+
 ### `/usr` – User system resources
 
 `/usr` is the **main software** directory, containing **programs**, **libraries**, and **shared data**. Most commands you run are in `/usr/bin`, while **system administration** tools are in `/usr/sbin`. 
@@ -132,4 +144,15 @@ The historical split between **"essential"** (in /bin, /sbin) and **"non-essenti
     * `fonts/` – Font files
     * `doc/`, `man/` – Documentation and manual pages
     * `applications/` – Desktop application entries (.desktop files)
+ 
+- **`/usr/local`** – Locally installed software
+  For software installed manually **by the administrator**, not through package manager.
+
+  **Inside:**
+    * `/usr/local/bin`
+    * `/usr/local/sbin`
+    * `/usr/local/lib`
+  
+  Useful for custom apps or source-compiled tools.
+  
 

@@ -219,7 +219,7 @@ Contains **static files required to boot the system**, including the Linux kerne
   - Application data → `~/.local/share/`
   - System-wide variable data → `/var/`
 
-### **Modern Developments:**
+#### **Modern Developments:**
 - **Configuration directories:** Many services use `/etc/[service]/conf.d/` for modular configs
 - **Dot-directories:** Some apps use `/etc/.config/` pattern (following XDG standards)
 - **Automatic config generators:** Tools like `netplan` (Ubuntu) generate configs in `/etc` from YAML files

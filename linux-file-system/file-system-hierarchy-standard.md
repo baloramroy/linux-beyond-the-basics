@@ -99,61 +99,48 @@ The historical split between **"essential"** (in /bin, /sbin) and **"non-essenti
 
 >**Note:** Think of `/usr` as the equivalent of **"Program Files"** in Windows.
 
-#
+**Inside `/usr`**
 
-### **Inside `/usr`: The other Directories Inside `/usr` Directories**
+Here are the core `/usr` subdirectories diagram:
+  ```
+  /usr/
+  ├── bin/
+  ├── sbin/
+  ├── lib/
+  ├── lib64/
+  ├── libexec/
+  ├── include/
+  ├── share/
+  ├── local/
+  ├── src/
+  └── games/
+  ```
 
-- **`/usr/bin` – User Binaries (Primary command location)**
-  
-  Contains the vast majority of **user executable commands**. On modern systems, `/bin` is typically a **symlink** here.
-  
-  **Examples:**
-    * `vim`, `nano` – text editors
-    * `git` – version control system
-    * `python3`, `node` – programming language interpreters
-    * `ssh`, `curl`, `wget` – network utilities
-  
-  
-- **`/usr/sbin` – System Administration Binaries**
-  
-  Contains **system administration commands** that are typically run by the **root user**. On **modern** systems, `/sbin` is typically a **symlink** here.
-  
-  **Examples:**
-    * `httpd`, `nginx` – web servers
-    * `cron`, `systemctl` – system services
-    * `sshd` – SSH server daemon
-    * `useradd`, `groupadd` – user management
-  
-  
-- **`/usr/lib` – Shared Libraries**
-  
-  Contains **shared library files** (.so files) needed by programs in `/usr/bin` and `/usr/sbin`. Architecture-dependent (contains **64-bit** or **32-bit** specific code).
-  Like:
-    * `lib` - Contains **32-bit** specific **library** files
-    * `lib64` - Contains **64-bit** specific **library** files
-  
-  > **Analogous to:** DLL files in Windows' `System32` directory.
-  
-  
-- **`/usr/share` – Architecture-Independent Shared Data**
-  
-  Contains **data** files used by **applications** that don't depend on the computer's processor type. This includes **documentation, graphics, fonts, and configuration** schemas that work the same way whether you're on an **Intel, AMD, ARM** (like Raspberry Pi), or other CPU.
-  
-  **Contains:**
-    * `icons/`, `themes/` – Graphical assets
-    * `fonts/` – Font files
-    * `doc/`, `man/` – Documentation and manual pages
-    * `applications/` – Desktop application entries (.desktop files)
- 
-- **`/usr/local`** – Locally installed software
-  For software installed manually **by the administrator**, not through package manager.
+**Example:**
 
-  **Inside:**
-    * `/usr/local/bin`
-    * `/usr/local/sbin`
-    * `/usr/local/lib`
-  
-  Useful for custom apps or source-compiled tools.
+- **`/usr/bin/`** - User binaries  
+  Examples: `ls`, `cp`, `python` etc.
+
+- **`/usr/sbin/`** - System administration binaries  
+  Examples: `useradd`, `ip`, `sshd` etc.
+
+- **`/usr/lib/`** - Libraries  
+  Examples: `libc.so.6`, `libssl.so.1.1` etc.
+
+- **`/usr/libexec/`** - Helper programs  
+  Examples: `ssh-keysign`, internal helper binaries etc.
+
+- **`/usr/include/`** - Header files  
+  Examples: `stdio.h`, `stdlib.h` etc.
+
+- **`/usr/share/`** - Architecture-independent data  
+  Examples: `Manual pages`, `documentation`, `fonts` etc.
+
+- **`/usr/local/`** - Locally installed software  
+  Examples: Locally compiled programs, custom installations etc.
+
+- **`/usr/src/`** - Source code  
+  Examples: Kernel source, package source etc.
 
 #
 
@@ -238,6 +225,135 @@ Contains **static files required to boot the system**, including the Linux kerne
 - **Automatic config generators:** Tools like `netplan` (Ubuntu) generate configs in `/etc` from YAML files
 
 #
+
+## `/var` – Variable data
+
+The `/var` directory contains **variable data**—files whose **size, content, or existence changes frequently** during normal system operation.
+
+>If data **grows, shrinks, gets updated, queued**, or **rewritten repeatedly**, it belongs in `/var`.
+
+* Data in `/var` is **dynamic**, not static.
+* Often placed on a **separate filesystem** to prevent root (`/`) from filling up.
+
+
+### **The Core Idea of `/var`**
+
+Linux separates data into two big categories:
+
+1. **Static data** which does NOT change often
+
+    Goes to `/`, `/usr`, `/boot`, `/etc`
+
+2. **Variable data** which changes continuously
+
+    Goes to **`/var`**
+
+That’s why the name is **`var` = variable**.
+
+
+### **Types of Data That Always Go to `/var`**
+
+**Logs (system keeps writing)**
+
+- Question to ask:\
+  *Does this file grow every time something happens?* If yes → `/var/log`
+
+- Examples:
+    * Login attempts
+    * Errors
+    * Service activity
+    * Security events
+
+- Why `/var`?\
+    Because logs are **constantly appended**.
+
+
+**Service State & Databases**
+
+- Question to ask:\
+  
+    *Does a service need this data to remember its state?*
+    If yes → `/var/lib`
+
+- Examples:
+
+  * MySQL database files
+  * Docker container metadata
+  * RPM package database
+
+- Why `/var`?\
+    Because services **modify this data while running**, and it **must survive reboots**.
+
+
+**Queues / Waiting Data**
+
+- Question to ask:\
+    *Is this data waiting to be processed?* If yes → `/var/spool`
+
+- Examples:
+    * Emails waiting to be sent
+    * Print jobs waiting to print
+    * Cron job definitions
+
+- Why `/var`?\
+    Because queue size **changes constantly**.
+
+
+**Cache (can be recreated)**
+
+- Question to ask:\
+    *Can this data be deleted and recreated safely?* If yes → `/var/cache`
+
+- Examples:
+
+    * DNF/YUM package cache
+    * Font cache
+    * Man page cache
+
+- Why `/var`?\
+    Because cache **changes dynamically** and **grows over time**.
+
+
+**Temporary but Persistent Data**
+
+- Question to ask:\
+    *Is it temporary but should survive reboot?* If yes → `/var/tmp`
+
+- Examples:
+    * Long-running temporary files
+    * Installer temp files
+
+- Why `/var`?\
+    Because unlike `/tmp`, it **is not cleared on reboot**.
+
+#
+
+### **One-Look Decision Table**
+
+Ask yourself this:
+
+| Question                              | Yes →        |
+| ------------------------------------- | ------------ |
+| Does it change while the system runs? | `/var`       |
+| Does it grow over time?               | `/var`       |
+| Is it written by a service/daemon?    | `/var`       |
+| Is it log, cache, queue, or database? | `/var`       |
+| Is it static program/config data?     |❌ Not `/var` |
+
+
+### **Very Strong Mental Model**
+
+Think of Linux like a factory:
+
+* `/usr` → tools and machines
+* `/etc` → rules and configuration
+* `/boot` → how the factory starts
+* **`/var` → factory activity records**
+
+Logs, queues, databases, cache — all **activity results** go to `/var`.
+
+
+## **Important Subdirectories**
 
 
 

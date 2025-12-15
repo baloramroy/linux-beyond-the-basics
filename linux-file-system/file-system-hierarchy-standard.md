@@ -272,7 +272,7 @@ The `/var` directory contains **variable data**—files whose **size, content, o
 * Often placed on a **separate filesystem** to prevent root (`/`) from filling up.
 
 
-### **The Core Idea of `/var`**
+### **Core Principle**
 
 Linux separates data into two big categories:
 
@@ -428,7 +428,7 @@ The home directory for the **superuser (root)** account. It's kept separate from
 
 The **/opt** directory is reserved for the installation of **self-contained, optional, and usually 3rd-party software packages**. 
 
-**Purpose and Philosophy of `/opt`**
+**Core Principles**
 
 1. **Self-contained applications:**
 

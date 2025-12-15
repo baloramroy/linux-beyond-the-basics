@@ -45,9 +45,27 @@ Below is the complete standard set of Linux directories and what each one is use
 
 ### `/` - Root Tirectory
 
+The **root directory** is the absolute starting point of the **entire Linux filesystem hierarchy**. Every single file, directory, device, and mount point originates from here. It's represented by a **single forward slash** (`/`).
+
 * The top-level directory of the filesystem
 * Everything starts here
 * Root contains all other directories
+
+**Subdirectories of `/root'**
+
+  ```
+  /                 # The root directory itself
+  ├── bin/          # Essential user binaries (ls, cp, bash)
+  ├── sbin/         # Essential system binaries (fdisk, fsck)
+  ├── etc/          # System-wide configuration files
+  ├── usr/          # User programs and data (secondary hierarchy)
+  ├── var/          # Variable data (logs, spools, caches)
+  ├── home/         # User home directories
+  ├── root/         # Home directory for the root user
+  ├── lib/          # Essential shared libraries and kernel modules
+  ├── opt/          # Optional third-party software
+  ├── mnt/          # Temporary mount point for filesystems
+  ```
 
 #
 
@@ -82,6 +100,24 @@ This directory contains **binaries** essential for **system administration**, **
 ### `/lib`	- Core libraries
 Contains **shared library files** (.so files) needed by programs in `/usr/bin` and `/usr/sbin`. Which is now **Symbolic** link to `/usr/lib` directory. 
 - Its actually contains architecture dependent **32-bit** specific **library** files.
+
+**Example Libraries:**
+- `ld-linux*.so.*` – Program interpreter
+- `libc.so.*` – Standard C library (most critical)
+- `libm.so.*` – Mathematical functions
+- `libpthread.so.*` – Thread support
+
+### Standard Directory Structure of `/lib`:
+```
+/lib/
+├── ld-linux.so.2           # Dynamic linker (essential)
+├── libc.so.6              # GNU C Library (glibc)
+├── libm.so.6              # Math library
+├── libpthread.so.0        # POSIX threads
+├── modules/               # Kernel modules
+│   └── $(uname -r)/
+└── firmware/              # Device firmware
+```
 
 #
 

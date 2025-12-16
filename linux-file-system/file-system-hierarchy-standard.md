@@ -326,26 +326,47 @@ It is intentionally **separate from `/home`** for **security, reliability, and s
 
 ---
 
-### `/opt` – Optional software packages
+### `/opt` – Optional application software
 
-The **/opt** directory is reserved for the installation of **self-contained, optional, and usually 3rd-party software packages** that does not come with the operating system by default. 
+The **/opt** directory is reserved for **optional, add-on, and third-party application software** that is **not part of the default operating system**.
 
-**Puropse of `/opt`**
+Software installed under `/opt` is usually **self-contained**, keeping its **binaries, libraries, and configuration files** together and **separate from system-managed directories** like `/usr` and `/etc`.
 
-- Keeps **third-party** software separate from **system files**
-- Prevents files from being **scattered** across `/usr`, `/etc`, `/var`
-- Makes software easy to **install** and **remove**
-- Follows the Linux **Filesystem Hierarchy Standard (FHS)**
+**Purpose of `/opt`**
+
+* Stores **third-party or vendor-supplied software**
+* Keeps optional software **isolated** from system files
+* Prevents files from being **scattered** across the filesystem
+* Simplifies **installation, upgrade, and removal**
+* Follows **Filesystem Hierarchy Standard (FHS)** guidelines
 
 **Examples:**
 
-  ```
-  /opt/google/chrome/
-  /opt/microsoft/teams/
-  /opt/oracle/virtualbox/
-  /opt/jetbrains/intellij-idea/
-  /opt/sublime_text_4/
-  ```
+* `/opt/google/` – Google Chrome installation
+* `/opt/oracle/` – Oracle database software
+* `/opt/vmware/` – VMware products
+* `/opt/zabbix/` – Zabbix server or agent
+* `/opt/jetbrains/` – JetBrains IDEs
+* `/opt/custom_app/` – In-house application
+
+**Standard Directory Structure of `/opt`**
+
+```
+/opt/
+├── google/                # Google Chrome
+├── oracle/                # Oracle software
+├── vmware/                # VMware products
+├── zabbix/                # Zabbix components
+├── jetbrains/             # JetBrains tools
+└── custom_app/            # Custom or in-house application
+```
+
+**Notes:**
+
+* Subdirectories are **created by the software installer**.
+* Each application usually has its **own directory**.
+* Configuration files may still reside in `/etc`.
+* Logs and variable data may be stored in `/var`.
 
 **One-Line Memory Trick**
 >`/opt = Optional, third-party, self-contained software`

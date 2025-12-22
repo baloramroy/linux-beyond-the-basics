@@ -189,7 +189,18 @@ Here are the core `/usr` subdirectories diagram:
 
 ### `/boot` – Bootloader files
 
-Contains **static files required to boot the system**, including the Linux kernel, initial RAM filesystem, and bootloader configuration.
+The **/boot** directory contains **static files required to start (boot) the Linux operating system**.
+Without the files inside `/boot`, the system **cannot load the kernel** and **will not start**.
+
+>Think of `/boot` as the place where **Linux learns how to start itself**.
+
+Suppose you power on a Linux server, right?
+
+* The system firmware (**BIOS/UEFI**) needs to know **which kernel to load**
+* It needs instructions on **where the root filesystem is**
+* It needs temporary drivers to access disks before `/` is mounted
+
+All this critical information comes from **/boot**.
 
 **Example:**
 - **Kernel images:** `vmlinuz-*` (compressed kernel executable)
